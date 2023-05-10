@@ -11,6 +11,20 @@ class ProjectsDesktopView extends StatefulWidget {
 class _ProjectsDesktopViewState extends State<ProjectsDesktopView> {
   @override
   Widget build(BuildContext context) {
-    return DesktopLayout(body: Container());
+    return DesktopLayout(
+        body: Container(
+            child: Row(children: [
+      Expanded(
+          child: Padding(
+        padding: const EdgeInsets.only(left: 15.0, top: 15.0, right: 15.0),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primaryContainer,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        ),
+      )),
+      Container(width: 350),
+    ])));
   }
 }

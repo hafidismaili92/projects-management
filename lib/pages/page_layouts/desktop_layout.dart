@@ -12,11 +12,9 @@ class DesktopLayout extends StatelessWidget {
           Container(
             width: 350,
             color: Theme.of(context).primaryColor,
-            child: Column(
-              children: [
-                Text("holla"),
-                Sidebare(),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.only(top: 60),
+              child: Sidebare(),
             ),
           ),
           Expanded(
