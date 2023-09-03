@@ -6,4 +6,6 @@ class TextStyles {
     letterSpacing: .8,
     fontSize: 16,
   );
+  static TextStyle boldTitles =
+      TextStyle(fontSize: 18, fontWeight: FontWeight.bold, letterSpacing: 0.5);
 }

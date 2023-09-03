@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Contracts\LoginResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -20,7 +21,21 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        //custom loginResponse when loggin success api to return user data
+
+        $this->app->instance(LoginResponse::class, new class implements LoginResponse {
+            public function toResponse($request)
+            {
+                /**
+                 * @var User $user
+                 */
+                $user = $request->user();
+                
+                return $request->wantsJson()
+                    ? response()->json(['two_factor' => false, 'user' => $user ])
+                    : redirect()->intended(Fortify::redirects('login'));
+            }
+        });
     }
 
     /**

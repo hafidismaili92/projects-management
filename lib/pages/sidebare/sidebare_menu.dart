@@ -7,13 +7,13 @@ class SidebareMenu extends StatelessWidget {
   bool isActive;
   IconData activeIcon;
   IconData icon;
-  Function() onSelect;
+  Function()? onSelect;
   SidebareMenu(
       {required this.title,
       required this.isActive,
       required this.activeIcon,
       required this.icon,
-      required this.onSelect});
+      this.onSelect});
   @override
   Widget build(BuildContext context) {
     IconData menuIcon;
@@ -21,11 +21,11 @@ class SidebareMenu extends StatelessWidget {
     Color? textColor;
     if (isActive) {
       menuIcon = activeIcon;
-      menuColor = Theme.of(context).colorScheme.outlineVariant;
-      textColor = Theme.of(context).colorScheme.inversePrimary;
+      menuColor = Theme.of(context).colorScheme.primaryContainer;
+      textColor = Theme.of(context).colorScheme.onPrimaryContainer;
     } else {
       menuIcon = icon;
-      textColor = Theme.of(context).colorScheme.onPrimary;
+      textColor = Theme.of(context).colorScheme.onSecondaryContainer;
     }
     return Selectionnable(
         onSelect: onSelect,
@@ -33,7 +33,7 @@ class SidebareMenu extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: (isHoverd & !isActive)
-                    ? Theme.of(context).colorScheme.secondary
+                    ? Theme.of(context).colorScheme.primaryContainer
                     : menuColor,
               ),
               child: Padding(

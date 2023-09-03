@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:project_management/services/api/authService.dart';
+import 'package:provider/provider.dart';
+
+import 'package:project_management/providers/viewIndex.dart';
 import 'package:project_management/constants/app_constants.dart';
-import 'package:project_management/shared_components/selectionnable.dart';
+import 'package:project_management/routes/routeNames.dart' as routeNames;
 import 'package:project_management/pages/sidebare/sidebare_menu.dart';
+import 'package:project_management/routes/routeNames.dart' as RouteNames;
+import 'package:project_management/shared_components/appLoader.dart';
+import 'package:project_management/services/api/apiClient.dart';
 
 class Sidebare extends StatefulWidget {
   const Sidebare({Key? key}) : super(key: key);
@@ -11,65 +18,121 @@ class Sidebare extends StatefulWidget {
 }
 
 class _SidebareState extends State<Sidebare> {
-  int selectedIndex = 0;
+  bool showLoader = false;
   final data = [
-    {"title": "menu 1", "activeIcon": Icons.menu_book, "icon": Icons.remove},
-    {"title": "menu 2", "activeIcon": Icons.access_alarm, "icon": Icons.ac_unit}
+    {
+      "title": "Plans Hub",
+      "activeIcon": Icons.menu_book,
+      "icon": Icons.remove,
+      "route": routeNames.plansHub
+    },
+    {
+      "title": "Tasks",
+      "activeIcon": Icons.access_alarm,
+      "icon": Icons.ac_unit,
+      "route": routeNames.tasksRoute
+    },
+    {
+      "title": "Team",
+      "activeIcon": Icons.group_outlined,
+      "icon": Icons.group,
+      "route": routeNames.teamRoute
+    }
   ];
-  void setSidebarIndex(newIndex) {
+
+  void logout() {
     setState(() {
-      selectedIndex = newIndex;
+      showLoader = true;
+    });
+    ApiClient client = Provider.of<ApiClient>(context, listen: false);
+    AuthService auth = AuthService(apiClient: client);
+    auth.logout((resp) {
+      Navigator.pushNamed(context, routeNames.loginRoute);
+    }, (resp) {
+      setState(() {
+        showLoader = false;
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final txtStyle = TextStyle(color: kFontColorPallets[1], letterSpacing: .8);
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundImage:
-                    NetworkImage('https://picsum.photos/250?image=9'),
-                radius: 30,
-                backgroundColor: Colors.white,
+    final txtStyle = Theme.of(context)
+        .textTheme
+        .titleMedium!
+        .copyWith(color: Theme.of(context).colorScheme.onSecondaryContainer);
+    return Container(
+      color: Theme.of(context).colorScheme.secondaryContainer,
+      child: showLoader
+          ? Center(
+              child: AppLoader(
+                  color: Theme.of(context).colorScheme.onSecondaryContainer))
+          : Padding(
+              padding: const EdgeInsets.only(top: 60),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundImage:
+                              NetworkImage('https://picsum.photos/250?image=9'),
+                          radius: 30,
+                        ),
+                        SizedBox(width: 25),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("HAFID ISMAILI", style: txtStyle),
+                              Text("Project manager", style: txtStyle)
+                            ])
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 100),
+                    child: Divider(
+                      thickness: 3,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Column(
+                      children: data.asMap().entries.map((e) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: SidebareMenu(
+                          title: e.value["title"].toString(),
+                          isActive:
+                              context.watch<ViewIndex>().currentIndex == e.key,
+                          activeIcon: e.value["activeIcon"] as IconData,
+                          icon: e.value["icon"] as IconData,
+                          onSelect: () {
+                            context.read<ViewIndex>().currentIndex = e.key;
+                            Navigator.pushNamed(
+                                context, e.value["route"] as String);
+                          }),
+                    );
+                  }).toList()),
+                  Spacer(),
+                  TextButton(
+                      onPressed: () {
+                        logout();
+                      },
+                      child: SidebareMenu(
+                        title: "Logout",
+                        isActive: false,
+                        activeIcon: Icons.logout,
+                        icon: Icons.logout,
+                      ))
+                ],
               ),
-              SizedBox(width: 25),
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text("HAFID ISMAILI", style: txtStyle),
-                Text("Project manager", style: txtStyle)
-              ])
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 50,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 100),
-          child: Divider(
-            thickness: 3,
-          ),
-        ),
-        SizedBox(
-          height: 30,
-        ),
-        Column(
-            children: data.asMap().entries.map((e) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: SidebareMenu(
-                title: e.value["title"].toString(),
-                isActive: selectedIndex == e.key,
-                activeIcon: e.value["activeIcon"] as IconData,
-                icon: e.value["icon"] as IconData,
-                onSelect: () => setSidebarIndex(e.key)),
-          );
-        }).toList()),
-      ],
+            ),
     );
   }
 }

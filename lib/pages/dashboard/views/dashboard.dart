@@ -4,13 +4,11 @@ import 'package:project_management/pages/dashboard/views/dashboard_desktop.dart'
 import 'package:project_management/pages/dashboard/views/dashboard_tablet.dart';
 import 'package:project_management/pages/dashboard/views/dashboard_mobile.dart';
 
-class Dashboard extends StatelessWidget {
+class DashboardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ResponsiveScreen(
-      mobileScreen: DashboardMobileView(),
-      tabletScreen: DashboardTabletView(),
-      desktopScreen: DashboardDesktopView(),
+    return ResponsiveLayout(
+      child: DashboardMobileView(),
     );
   }
 }

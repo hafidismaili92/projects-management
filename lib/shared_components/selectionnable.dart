@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Selectionnable extends StatefulWidget {
   Function()? onSelect;
   Widget Function(bool isHoverd) builder;
-  Selectionnable({required this.onSelect, required this.builder});
+  Selectionnable({this.onSelect, required this.builder});
   @override
   State<Selectionnable> createState() => _SelectionnableState();
 }
