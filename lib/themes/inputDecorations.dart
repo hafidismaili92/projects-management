@@ -18,4 +18,13 @@ class AppInputDecorations {
         // disabledBorder: this._buildBorders(Colors.grey),
         // border: this._buildBorders(Colors.indigo))),
       );
+  static InputDecoration roundedFilledNoneBorder(Color fillColor) =>
+      InputDecoration(
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(50.0),
+        ),
+        fillColor: fillColor,
+        filled: true,
+      );
 }

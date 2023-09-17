@@ -10,6 +10,8 @@ import 'package:project_management/themes/theme.dart';
 import 'package:project_management/routes/routeNames.dart' as routeNames;
 import 'package:project_management/routes/routeController.dart';
 import 'package:project_management/constants/app_constants.dart';
+//import OneSignal
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 void main() {
   const headers = {
@@ -32,19 +34,40 @@ void main() {
   ));
 }
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  @override
+  void initState() {
+    super.initState();
+    initOneSignal();
+  }
+
   @override
   Widget build(BuildContext context) {
-    AppTheme appTheme = AppTheme(mainColor: kAppColorSeeds["red"]!);
+    AppTheme appTheme = AppTheme(mainColor: kAppColorSeeds["clairMauve"]!);
     return MaterialApp(
         useInheritedMediaQuery: true,
         locale: DevicePreview.locale(context),
         builder: DevicePreview.appBuilder,
         //initialRoute: routeNames.checkAuthRoute,
-        initialRoute: routeNames.teamRoute,
+        initialRoute: routeNames.plansHub,
         onGenerateRoute: RouteController,
         theme: appTheme.light,
         darkTheme: appTheme.dark,
         themeMode: ThemeMode.system);
+  }
+
+  void initOneSignal() async {
+    //Remove this method to stop OneSignal Debugging
+    OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+
+    OneSignal.initialize(kOneSignalAppId);
+
+// The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+    OneSignal.Notifications.requestPermission(true);
   }
 }

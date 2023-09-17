@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 class ProjectCard extends StatelessWidget {
-  String text;
-  ProjectCard({required this.text});
+  String title;
+  String? description;
+  ProjectCard({required this.title, this.description});
   @override
   Widget build(BuildContext context) {
-    List<String> txtToList = text.split(" ");
+    List<String> txtToList = title.split(" ");
     String avatarLetter = txtToList.length > 1
         ? "${txtToList[0][0]}${txtToList[1][0]}"
         : "${txtToList[0][0]}";
@@ -34,15 +35,15 @@ class ProjectCard extends StatelessWidget {
               ),
               Expanded(
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        text,
+                        title,
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
-                      Text(text,
+                      Text(description ?? '',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.bodyMedium)

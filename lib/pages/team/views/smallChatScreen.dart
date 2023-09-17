@@ -15,30 +15,27 @@ class SmallChatScreen extends StatelessWidget {
         Navigator.push<void>(
           context,
           MaterialPageRoute(
-            builder: (context) => Container(
-                child: Column(
-              children: [
-                Container(
-                    alignment: Alignment.centerLeft,
-                    color: Theme.of(context).colorScheme.primary,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextButton.icon(
-                        style: ButtonStyle(
-                            foregroundColor: MaterialStateColor.resolveWith(
-                                (states) =>
-                                    Theme.of(context).colorScheme.onPrimary)),
-                        icon: Icon(Icons.arrow_back_ios_sharp, size: 24),
-                        onPressed: () => Navigator.pop(context),
-                        label: Text('Back'),
-                      ),
-                    )),
-                Expanded(
-                    child: Container(
-                        color: Theme.of(context).colorScheme.surfaceVariant,
-                        child: ConversationView())),
-              ],
-            )),
+            builder: (context) => Scaffold(
+              appBar: AppBar(
+                elevation: 20,
+                automaticallyImplyLeading: false,
+                leading: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.arrow_back_ios_sharp, // add custom icons also
+                  ),
+                ),
+              ),
+              body: Container(
+                  color: Theme.of(context).colorScheme.surfaceVariant,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(top: 10.0, left: 10, right: 10),
+                    child: ConversationView(),
+                  )),
+            ),
             fullscreenDialog: true,
           ),
         );

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\api\PlanController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use Illuminate\Http\Request;
@@ -51,11 +52,12 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/user', function (Request $request) {
     return $request->user();
 });
+    Route::apiResource('plans',PlanController::class);
     //in case of mobile app or any api (not spa in same domain as web app) we use token based authentification
     Route::post('/logoutWithToken',[AuthController::class,'logoutCurrentInstance']);
 
      //in case of SPA in same domain or frontEnd of our application we use fortify (copied from fortify routes) : session based logout
-    Route::post('spaLogout', [AuthenticatedSessionController::class, 'destroy'])
+    Route::post('/spaLogout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('logout');
     Route::post('test',function(){
         return "ok";

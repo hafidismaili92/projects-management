@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 const kSpacing = 20.0;
 const kFontColorPallets = [
   Color.fromRGBO(255, 255, 255, 1),
@@ -12,6 +13,9 @@ const kAppColorSeeds = {
   "red": Color(0xFFF30656),
   "orange": Color(0xFFF35906),
   "green": Color(0xFF06F388),
+  "clairBlue": Color(0xFFF3F3F3),
+  "clairMauve": Color(0xFFB6B3B3),
+  "jaune": Color(0xFFffb63a)
 };
 
 const kVerticalSpace = {"small": 20.0, "meduim": 40.0, "large": 80.0};

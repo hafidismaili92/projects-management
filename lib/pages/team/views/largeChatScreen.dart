@@ -13,7 +13,10 @@ class LargeChatScreen extends StatelessWidget {
       Expanded(
         child: Container(
             color: Theme.of(context).colorScheme.surfaceVariant,
-            child: ConversationView()),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 20.0, left: 30, right: 30),
+              child: ConversationView(),
+            )),
       ),
     ]));
   }
